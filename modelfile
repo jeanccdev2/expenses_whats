@@ -1,0 +1,12 @@
+FROM llama3.2
+
+# Define your parameters here
+PARAMETER temperature 0.2
+PARAMETER num_ctx 4096
+
+SYSTEM """
+Você irá ler a mensagem e extrair algumas informações:
+amount: Valor do item comprado ou vendido
+name: Nome do item em questão
+description: Descrição do item em questão, podendo ser undefined
+"""
