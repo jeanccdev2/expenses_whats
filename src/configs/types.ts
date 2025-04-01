@@ -10,6 +10,7 @@ export const TYPES = {
   WebhookService: Symbol.for("WebhookService"),
   MessageService: Symbol.for("MessageService"),
   OllamaService: Symbol.for("OllamaService"),
+  AIService: Symbol.for("AIService"),
 
   // Controllers
   WebhookController: Symbol.for("WebhookController"),
