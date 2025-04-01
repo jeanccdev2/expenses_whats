@@ -1,17 +1,12 @@
 import { injectable } from "inversify";
-import { StandardApiResponse } from "../types/api-response";
 import ollama from "ollama";
-import { OllamaMessageResponse } from "../types/webhook/ollama-response";
-
-export interface IOllamaService {
-  postSendMessageToChat(message: string): Promise<OllamaMessageResponse>;
-}
+import { AIMessageResponse, IAIService } from "../types/webhook/ai";
 
 @injectable()
-export class OllamaService implements IOllamaService {
+export class OllamaService implements IAIService {
   constructor() {}
 
-  async postSendMessageToChat(message: string): Promise<OllamaMessageResponse> {
+  async postSendMessageToChat(message: string): Promise<AIMessageResponse> {
     try {
       const chat = await ollama.chat({
         model: "expenses_whats",

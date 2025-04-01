@@ -9,11 +9,12 @@ import {
   ILogsWebhooksRepository,
   LogsWebhooksRepository,
 } from "../repositories/logs-webhooks.repository";
-import { IOllamaService, OllamaService } from "../services/ollama.service";
 import {
   ISalesRepository,
   SalesRepository,
 } from "../repositories/sales.repository";
+import { GeminiService } from "../services/gemini.service";
+import { IAIService } from "../types/webhook/ai";
 
 const container = new Container({ defaultScope: "Singleton" });
 
@@ -24,14 +25,13 @@ container.bind<IFormat>(TYPES.FormatUtils).to(Format);
 container
   .bind<ILogsWebhooksRepository>(TYPES.LogsWebhooksRepository)
   .to(LogsWebhooksRepository);
-container
-  .bind<ISalesRepository>(TYPES.SalesRepository)
-  .to(SalesRepository);
+container.bind<ISalesRepository>(TYPES.SalesRepository).to(SalesRepository);
 
 // Services
 container.bind<IWebhookService>(TYPES.WebhookService).to(WebhookService);
 container.bind<IMessageService>(TYPES.MessageService).to(MessageService);
-container.bind<IOllamaService>(TYPES.OllamaService).to(OllamaService);
+// container.bind<IAIService>(TYPES.OllamaService).to(OllamaService);
+container.bind<IAIService>(TYPES.AIService).to(GeminiService);
 
 // Controllers
 container

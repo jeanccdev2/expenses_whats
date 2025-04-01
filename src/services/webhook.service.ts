@@ -4,8 +4,8 @@ import { TYPES } from "../configs/types";
 import { IFormat } from "../utils/format.utils";
 import { StandardApiResponse } from "../types/api-response";
 import { ILogsWebhooksRepository } from "../repositories/logs-webhooks.repository";
-import { IOllamaService } from "./ollama.service";
 import { ISalesRepository } from "../repositories/sales.repository";
+import { IAIService } from "../types/webhook/ai";
 
 export interface IWebhookService {
   postReceiveMessage(body: IMessageBody): Promise<StandardApiResponse>;
@@ -19,21 +19,21 @@ export class WebhookService implements IWebhookService {
     private logsWebhooksRepository: ILogsWebhooksRepository,
     @inject(TYPES.SalesRepository)
     private salesRepository: ISalesRepository,
-    @inject(TYPES.OllamaService)
-    private ollamaService: IOllamaService
+    @inject(TYPES.AIService)
+    private aiService: IAIService
   ) {}
 
   async postReceiveMessage(body: IMessageBody): Promise<StandardApiResponse> {
     try {
       const formattedMessage = this.formatUtils.formatMessageBody(body);
 
-      await this.logsWebhooksRepository.saveLog(
-        "postReceiveMessage",
-        JSON.stringify(body),
-        JSON.stringify(formattedMessage)
-      );
+      // await this.logsWebhooksRepository.saveLog(
+      //   "postReceiveMessage",
+      //   JSON.stringify(body),
+      //   JSON.stringify(formattedMessage)
+      // );
 
-      const chatResponse = await this.ollamaService.postSendMessageToChat(
+      const chatResponse = await this.aiService.postSendMessageToChat(
         formattedMessage.message
       );
 
@@ -48,12 +48,12 @@ export class WebhookService implements IWebhookService {
         };
       }
 
-      await this.salesRepository.save(
-        chatResponse.name,
-        chatResponse.amount,
-        chatResponse.category,
-        chatResponse.description
-      );
+      // await this.salesRepository.save(
+      //   chatResponse.name,
+      //   chatResponse.amount,
+      //   chatResponse.category,
+      //   chatResponse.description
+      // );
 
       return {
         status: 200,
