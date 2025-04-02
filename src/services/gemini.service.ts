@@ -13,6 +13,7 @@ const geminiConfig = {
     "category": "<categoria>",
     "description": "<descrição>"
   }
+  Todos os valores devem ser em letras minúsculas
   Se não souber algum valor, retorne null.`,
   },
   config: {
@@ -46,9 +47,11 @@ export class GeminiService implements IAIService {
 
       const result = await chatSession.sendMessage(message);
 
-      console.log(result);
+      const finalResponse = JSON.parse(
+        result.response.candidates[0].content.parts[0].text
+      );
 
-      return result as any;
+      return finalResponse;
     } catch (error) {
       console.error("Error saving webhook", error);
 
