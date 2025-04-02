@@ -13,6 +13,7 @@ const geminiConfig = {
     "category": "<categoria>",
     "description": "<descrição>"
   }
+  Todos os valores devem ser em letras minúsculas
   Se não souber algum valor, retorne null.`,
   },
   config: {
@@ -44,33 +45,13 @@ export class GeminiService implements IAIService {
         },
       });
 
-      const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
-      const chat = await ollama.chat({
-        model: "expenses_whats",
-        messages: [{ role: "user", content: message }],
-        format: {
-          type: "object",
-          properties: {
-            amount: {
-              type: "integer",
-            },
-            name: {
-              type: "string",
-            },
-            category: {
-              type: "string",
-            },
-            description: {
-              type: "string",
-            },
-          },
-          required: ["amount", "name", "category"],
-        },
-      });
+      const result = await chatSession.sendMessage(message);
 
-      const response = JSON.parse(chat.message.content);
+      const finalResponse = JSON.parse(
+        result.response.candidates[0].content.parts[0].text
+      );
 
-      return response;
+      return finalResponse;
     } catch (error) {
       console.error("Error saving webhook", error);
 
